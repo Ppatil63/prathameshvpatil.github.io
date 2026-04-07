@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prathamesh Vijay Patil — Business Analyst · Product · Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────────── */
+:root {
+  --ink:         #111010;
+  --ink-soft:    #3a3734;
+  --ink-muted:   #7a7470;
+  --ink-faint:   #b5b0ab;
+  --paper:       #f7f4f0;
+  --paper-warm:  #ede9e3;
+  --paper-card:  #f0ece6;
+  --accent:      #8b5e3c;
+  --accent-lt:   #c4956a;
+  --accent-rule: #d4b99a;
+  --white:       #fefdfb;
+  --line:        rgba(17,16,16,0.10);
+
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
+  --font-sans:   'DM Sans', system-ui, sans-serif;
+  --font-mono:   'DM Mono', monospace;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+
+  --nav-h:       64px;
+  --max-w:       1100px;
+  --col-gap:     clamp(24px, 4vw, 56px);
+  --section-pad: clamp(80px, 10vw, 140px);
+}
+
+/* ── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+/* ── TYPOGRAPHY ────────────────────────────────────── */
+.serif   { font-family: var(--font-serif); }
+.mono    { font-family: var(--font-mono); }
+.label   { font-family: var(--font-mono); font-size: 10px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-muted); }
+.section-label { font-family: var(--font-mono); font-size: 10px; font-weight: 400; letter-spacing: .20em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 12px; }
+.section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--accent-rule); }
+
+h1,h2,h3,h4 { font-weight: 400; line-height: 1.15; }
+
+/* ── UTILITY ────────────────────────────────────────── */
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(20px, 5vw, 60px); }
+.rule { width: 100%; height: 1px; background: var(--line); }
+.metric { font-family: var(--font-serif); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 300; color: var(--ink); letter-spacing: -.01em; }
+.metric-label { font-size: 11px; color: var(--ink-muted); letter-spacing: .06em; margin-top: 2px; }
+
+/* ── SCROLL REVEAL ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 480ms var(--ease-out), transform 480ms var(--ease-out);
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── NAV ────────────────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  display: flex; align-items: center;
+  background: rgba(247,244,240,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 300ms, background 300ms;
+}
+#nav.scrolled { border-bottom-color: var(--line); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+}
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--ink);
+  transition: color 180ms;
+}
+.nav-logo:hover { color: var(--accent); }
+.nav-links {
+  display: flex; align-items: center; gap: clamp(18px, 3vw, 36px);
+}
+.nav-links a {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  position: relative;
+  transition: color 180ms var(--ease-out);
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 280ms var(--ease-out);
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  display: flex; gap: 10px; align-items: center;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; letter-spacing: .10em; text-transform: uppercase;
+  padding: 9px 18px; border-radius: 2px;
+  transition: background 180ms var(--ease-out), color 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  background: transparent;
+}
+.btn-ghost:hover { border-color: var(--ink-soft); color: var(--ink); }
+.btn-solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-solid:hover { background: var(--ink-soft); }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+.nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--ink); transition: all 300ms; }
+
+/* ── HERO ────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-top: var(--nav-h);
+  padding-bottom: clamp(60px, 8vw, 100px);
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg-text {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -46%);
+  font-family: var(--font-serif);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 300;
+  color: rgba(139,94,60,0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+.hero-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--col-gap);
+  align-items: end;
+}
+.hero-left {}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+.hero-name {
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 7vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin-bottom: 10px;
+}
+.hero-name em { font-style: italic; }
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.3;
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--ink-muted);
+  max-width: 400px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+.hero-meta {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.hero-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--ink-muted);
+}
+.hero-meta-item svg { flex-shrink: 0; }
+.hero-meta-item a { color: var(--ink-muted); transition: color 180ms; }
+.hero-meta-item a:hover { color: var(--accent); }
+.hero-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 32px;
+}
+.hero-photo-wrap {
+  width: clamp(200px, 28vw, 340px);
+  aspect-ratio: 3/4;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  position: relative;
+}
+.hero-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.hero-photo-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  color: var(--ink-faint);
+}
+.hero-photo-placeholder svg { opacity: .4; }
+.hero-photo-placeholder span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; opacity: .5; }
+.hero-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  width: 100%;
+}
+.hero-stat {
+  background: var(--paper);
+  padding: 18px 20px;
+}
+
+/* ── ABOUT ──────────────────────────────────────────── */
+#about { padding: var(--section-pad) 0; background: var(--white); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--col-gap);
+  align-items: start;
+}
+.about-sidebar {}
+.about-main {}
+.about-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-top: 20px;
+  margin-bottom: 32px;
+}
+.about-body {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.about-strengths {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+  margin-top: 32px;
+}
+.strength-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.strength-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.about-edu {
+  margin-top: 36px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper);
+}
+.edu-item + .edu-item { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.edu-degree { font-size: 14px; font-weight: 500; color: var(--ink); }
+.edu-school { font-size: 13px; color: var(--ink-muted); margin-top: 2px; }
+.edu-date { font-family: var(--font-mono); font-size: 10px; color: var(--accent); letter-spacing: .08em; margin-top: 4px; }
+.seeking-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--accent-rule);
+  border-radius: 100px;
+  padding: 6px 14px;
+  margin-top: 28px;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .06em;
+}
+.seeking-pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(.75); }
+}
+
+/* ── EXPERIENCE ─────────────────────────────────────── */
+#experience { padding: var(--section-pad) 0; background: var(--paper); }
+.exp-intro {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--col-gap);
+  margin-bottom: clamp(48px, 6vw, 80px);
+  align-items: start;
+}
+.exp-intro-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-top: 20px;
+}
+.exp-intro-copy { font-size: 15px; color: var(--ink-muted); line-height: 1.7; max-width: 480px; margin-top: 20px; }
+.exp-tabs {
+  display: flex; gap: 2px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 48px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.exp-tab {
+  flex-shrink: 0;
+  padding: 12px 20px 11px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 180ms, border-color 180ms;
+  cursor: pointer;
+}
+.exp-tab.active, .exp-tab:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.exp-tab.active { color: var(--ink); border-bottom-color: var(--accent); }
+.exp-panel { display: none; }
+.exp-panel.active { display: block; }
+.exp-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+.exp-role {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+.exp-org { font-size: 13px; color: var(--accent); font-weight: 500; margin-top: 4px; letter-spacing: .02em; }
+.exp-location { font-size: 12px; color: var(--ink-muted); margin-top: 3px; }
+.exp-date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted);
+  letter-spacing: .08em;
+  white-space: nowrap;
+  text-align: right;
+  margin-top: 6px;
+}
+.exp-metrics {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 32px;
+}
+.metric-chip {
+  display: flex; flex-direction: column;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--white);
+  min-width: 110px;
+}
+.exp-body { font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
+.exp-ul { display: flex; flex-direction: column; gap: 12px; }
+.exp-ul li {
+  display: flex; align-items: flex-start; gap: 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.exp-ul li::before {
+  content: '—';
+  color: var(--accent-rule);
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-family: var(--font-serif);
+}
+.exp-tools {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 28px;
+}
+.tool-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--ink-muted);
+  letter-spacing: .04em;
+}
+.exp-sub-role {
+  margin-top: 40px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.exp-sub-role .exp-role { font-size: clamp(1.1rem, 1.8vw, 1.5rem); }
+
+/* ── PROJECTS ───────────────────────────────────────── */
+#projects { padding: var(--section-pad) 0; background: var(--white); }
+.projects-intro {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--col-gap);
+  margin-bottom: clamp(48px, 6vw, 80px);
+}
+.projects-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-top: 20px;
+}
+.projects-copy { font-size: 15px; color: var(--ink-muted); line-height: 1.7; max-width: 480px; margin-top: 20px; }
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.project-card {
+  background: var(--paper);
+  padding: 36px 32px;
+  transition: background 200ms var(--ease-out);
+  cursor: pointer;
+  position: relative;
+}
+.project-card:hover { background: var(--paper-card); }
+.project-card.featured { grid-column: span 2; background: var(--ink); color: var(--paper); }
+.project-card.featured:hover { background: var(--ink-soft); }
+.project-number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+.project-card.featured .project-number { color: rgba(247,244,240,0.35); }
+.project-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.project-card.featured .project-title { font-size: clamp(1.5rem, 2.8vw, 2.4rem); }
+.project-org {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent-lt);
+  margin-bottom: 16px;
+}
+.project-card.featured .project-org { color: var(--accent-lt); }
+.project-card:not(.featured) .project-org { color: var(--accent); }
+.project-summary {
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.project-card.featured .project-summary { color: rgba(247,244,240,0.6); }
+.project-metrics-row {
+  display: flex; flex-wrap: wrap; gap: 24px;
+}
+.project-metric .metric { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+.project-card.featured .project-metric .metric { color: var(--paper); }
+.project-card.featured .metric-label { color: rgba(247,244,240,0.5); }
+.project-expand {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(247,244,240,.1);
+  display: none;
+}
+.project-card.featured .project-expand { border-top-color: rgba(247,244,240,.12); }
+.project-card:not(.featured) .project-expand { border-top-color: var(--line); }
+.project-expand.open { display: block; }
+.project-expand ul { display: flex; flex-direction: column; gap: 10px; }
+.project-expand li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.project-expand li::before { content: '→'; flex-shrink: 0; margin-top: 1px; }
+.project-card.featured .project-expand li { color: rgba(247,244,240,0.75); }
+.project-card.featured .project-expand li::before { color: var(--accent-lt); }
+.project-card:not(.featured) .project-expand li { color: var(--ink-soft); }
+.project-card:not(.featured) .project-expand li::before { color: var(--accent); }
+.project-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; letter-spacing: .10em; text-transform: uppercase;
+  margin-top: 24px;
+  color: inherit;
+  opacity: .6;
+  transition: opacity 180ms;
+}
+.project-toggle:hover { opacity: 1; }
+.project-toggle-icon { transition: transform 300ms var(--ease-out); }
+.project-toggle-icon.rotated { transform: rotate(45deg); }
+.coming-soon-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-faint);
+  border: 1px solid var(--line);
+  padding: 4px 10px; border-radius: 100px;
+  margin-top: 20px;
+}
+
+/* ── SKILLS ─────────────────────────────────────────── */
+#skills { padding: var(--section-pad) 0; background: var(--paper); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 48px;
+}
+.skills-cell {
+  background: var(--paper);
+  padding: 28px 24px;
+}
+.skills-cell-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.skills-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-tag {
+  font-size: 11px;
+  color: var(--ink-soft);
+  padding: 4px 8px;
+  background: var(--paper-warm);
+  border-radius: 2px;
+  line-height: 1.4;
+}
+
+/* ── RESUME ─────────────────────────────────────────── */
+#resume { padding: var(--section-pad) 0; background: var(--ink); color: var(--paper); }
+.resume-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--col-gap);
+  align-items: center;
+}
+.resume-left {}
+.resume-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.resume-copy { font-size: 14px; color: rgba(247,244,240,0.6); line-height: 1.7; max-width: 400px; margin-bottom: 36px; }
+.resume-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-ghost-light {
+  border: 1px solid rgba(247,244,240,.25);
+  color: rgba(247,244,240,.8);
+}
+.btn-ghost-light:hover { border-color: rgba(247,244,240,.6); color: var(--paper); }
+.btn-paper { background: var(--paper); color: var(--ink); }
+.btn-paper:hover { background: var(--paper-warm); }
+.resume-right {
+  display: flex; flex-direction: column; gap: 24px;
+}
+.resume-link-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px;
+  border: 1px solid rgba(247,244,240,.12);
+  border-radius: 2px;
+  transition: border-color 180ms, background 180ms;
+  cursor: pointer;
+}
+.resume-link-card:hover { border-color: rgba(247,244,240,.3); background: rgba(247,244,240,.04); }
+.resume-link-label { font-size: 11px; letter-spacing: .10em; text-transform: uppercase; color: rgba(247,244,240,.4); margin-bottom: 4px; }
+.resume-link-value { font-size: 14px; color: var(--paper); }
+.resume-link-arrow { color: rgba(247,244,240,.3); transition: transform 180ms, color 180ms; }
+.resume-link-card:hover .resume-link-arrow { transform: translateX(4px); color: rgba(247,244,240,.7); }
+.seeking-note {
+  margin-top: 28px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px;
+  color: rgba(247,244,240,.4);
+}
+
+/* ── CONTACT ────────────────────────────────────────── */
+#contact { padding: var(--section-pad) 0; background: var(--white); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--col-gap);
+  align-items: start;
+}
+.contact-left {}
+.contact-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.contact-copy { font-size: 15px; color: var(--ink-muted); line-height: 1.7; max-width: 420px; }
+.contact-right { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+.contact-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper);
+  transition: border-color 180ms, background 180ms;
+  text-decoration: none;
+}
+.contact-item:hover { border-color: var(--accent-rule); background: var(--paper-card); }
+.contact-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--paper-warm);
+  border-radius: 2px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.contact-info {}
+.contact-info-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); }
+.contact-info-value { font-size: 13px; color: var(--ink); margin-top: 2px; }
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-copy { font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; transition: color 180ms; }
+.footer-links a:hover { color: var(--ink-muted); }
+
+/* ── MOBILE MENU ─────────────────────────────────────── */
+.mobile-menu {
+  display: none;
+  position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0;
+  background: var(--paper);
+  z-index: 99;
+  flex-direction: column;
+  padding: 40px clamp(20px, 5vw, 60px);
+  gap: 8px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--ink);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  transition: color 180ms;
+}
+.mobile-menu a:hover { color: var(--accent); }
+.mobile-menu-actions {
+  display: flex; gap: 10px; margin-top: 28px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  .hero-photo-wrap { width: clamp(140px, 40vw, 220px); }
+  .about-grid { grid-template-columns: 1fr; }
+  .exp-intro { grid-template-columns: 1fr; }
+  .projects-intro { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card.featured { grid-column: span 1; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .resume-inner { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-right { margin-top: 20px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .about-strengths { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .exp-tabs { gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ────────────────────────────────────── -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">Prathamesh V. Patil</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#resume">Resume</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-cta">
+        <!-- REPLACE: Update href to your actual LinkedIn URL -->
+        <a href="https://linkedin.com/in/prathameshvpatil" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+        <!-- REPLACE: Update href to your resume file path e.g. /resume.pdf -->
+        <a href="Prathamesh_BA_Resume.pdf" download class="btn btn-solid">Resume</a>
+        <button class="nav-hamburger" aria-label="Toggle menu" id="hamburger">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Navigation menu">
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#experience" class="mobile-link">Experience</a>
+  <a href="#projects" class="mobile-link">Projects</a>
+  <a href="#resume" class="mobile-link">Resume</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <div class="mobile-menu-actions">
+    <a href="https://linkedin.com/in/prathameshvpatil" target="_blank" class="btn btn-ghost">LinkedIn</a>
+    <a href="Prathamesh_BA_Resume.pdf" download class="btn btn-solid">Resume</a>
+  </div>
+</div>
+
+<!-- ── HERO ───────────────────────────────────────────── -->
+<section id="hero" aria-label="Introduction">
+  <div class="hero-bg-text" aria-hidden="true">Analyst</div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-eyebrow reveal">MS Engineering Management · ASU · Phoenix, AZ</div>
+        <h1 class="hero-name reveal reveal-delay-1">
+          Prathamesh<br><em>Vijay Patil</em>
+        </h1>
+        <p class="hero-headline reveal reveal-delay-2">
+          Turning ambiguity into structured decisions.
+        </p>
+        <p class="hero-sub reveal reveal-delay-3">
+          Business analyst and product thinker with hands-on experience bridging stakeholder needs, system complexity, and measurable outcomes — across enterprise software, global operations, and product incubation.
+        </p>
+        <div class="hero-actions reveal reveal-delay-4">
+          <a href="#experience" class="btn btn-solid">View Experience</a>
+          <a href="#projects" class="btn btn-ghost">See Projects</a>
+        </div>
+        <div class="hero-meta reveal reveal-delay-4">
+          <div class="hero-meta-item">
+            <!-- Location -->
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 1C3.79 1 2 2.79 2 5c0 3 4 7 4 7s4-4 4-7c0-2.21-1.79-4-4-4z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+            <span>Phoenix, AZ · Open to relocate</span>
+          </div>
+          <div class="hero-meta-item">
+            <!-- Email -->
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="1" y="2.5" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M1 3.5l5 3.5 5-3.5" stroke="currentColor" stroke-width="1.2"/></svg>
+            <!-- REPLACE: your email address -->
+            <a href="mailto:prathameshpatil5196@gmail.com">prathameshpatil5196@gmail.com</a>
+          </div>
+          <div class="hero-meta-item">
+            <!-- Phone -->
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="3" y="1" width="6" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="9" r=".7" fill="currentColor"/></svg>
+            <!-- REPLACE: your phone number -->
+            <a href="tel:+16025767646">+1 (602) 576-7646</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right reveal reveal-delay-2">
+        <!-- REPLACE: swap this placeholder with an actual <img> tag pointing to your photo -->
+        <div class="hero-photo-wrap">
+          <div class="hero-photo-placeholder">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="15" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M6 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span>Profile Photo</span>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="metric">3+</div>
+            <div class="metric-label">Years experience</div>
+          </div>
+          <div class="hero-stat">
+            <div class="metric">91%</div>
+            <div class="metric-label">CSAT achieved at TCS</div>
+          </div>
+          <div class="hero-stat">
+            <div class="metric">$40K+</div>
+            <div class="metric-label">Cost savings driven</div>
+          </div>
+          <div class="hero-stat">
+            <div class="metric">23+</div>
+            <div class="metric-label">Stakeholders managed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── ABOUT ──────────────────────────────────────────── -->
+<section id="about" aria-label="About me">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-sidebar reveal">
+        <div class="section-label">01 — About</div>
+        <h2 class="about-title">
+          Business analyst.<br>Product thinker.<br>Structured<br>communicator.
+        </h2>
+        <div class="seeking-pill">
+          <div class="seeking-pulse" aria-hidden="true"></div>
+          Open to opportunities
+        </div>
+      </div>
+      <div class="about-main reveal reveal-delay-1">
+        <p class="about-body">
+          I am a graduate student in Engineering Management at Arizona State University, building on a foundation of enterprise software delivery, operations leadership, and product incubation. My work consistently sits at the intersection of business requirements, system complexity, and cross-functional execution.
+        </p>
+        <p class="about-body">
+          At Tata Consultancy Services, I owned feature intake, managed UAT across sprint releases for a global GE Vernova rollout, and reduced post-migration support tickets through systematic pre-launch analysis. Before that, I ran day-to-day operations for a manufacturing business — making scheduling, logistics, and cost decisions with real P&amp;L consequences. Today I apply that same outcome orientation to product and strategy work at ASU.
+        </p>
+        <p class="about-body">
+          I am actively seeking full-time roles in <strong>Business Analysis, Product Analysis, Operations, and early-career Product Management</strong> starting mid-2025. I bring structured thinking, strong stakeholder communication, and a track record of quantifiable improvement.
+        </p>
+        <div class="about-strengths">
+          <div class="strength-item">Requirements gathering</div>
+          <div class="strength-item">Stakeholder management</div>
+          <div class="strength-item">UAT coordination</div>
+          <div class="strength-item">Process improvement</div>
+          <div class="strength-item">SQL &amp; Excel analysis</div>
+          <div class="strength-item">BRD / FRD documentation</div>
+          <div class="strength-item">Product thinking</div>
+          <div class="strength-item">Cross-functional communication</div>
+          <div class="strength-item">Agile / Scrum workflows</div>
+          <div class="strength-item">Root cause analysis</div>
+        </div>
+        <div class="about-edu">
+          <div class="edu-item">
+            <div class="edu-degree">MS in Engineering Management</div>
+            <div class="edu-school">Arizona State University — Tempe, AZ</div>
+            <div class="edu-date">August 2024 – Present</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">Bachelor of Engineering</div>
+            <div class="edu-school">Savitribai Phule Pune University — Pune, India</div>
+            <div class="edu-date">Completed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── EXPERIENCE ─────────────────────────────────────── -->
+<section id="experience" aria-label="Work experience">
+  <div class="container">
+    <div class="exp-intro">
+      <div class="reveal">
+        <div class="section-label">02 — Experience</div>
+        <h2 class="exp-intro-title">Where I have applied my craft</h2>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <p class="exp-intro-copy">
+          Across enterprise technology, manufacturing operations, and higher education — each role has sharpened how I diagnose problems, align stakeholders, and translate complexity into clear, executable action.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="exp-tabs reveal" role="tablist" aria-label="Experience tabs">
+      <button class="exp-tab active" role="tab" aria-selected="true"  data-tab="tcs">Tata Consultancy Services</button>
+      <button class="exp-tab"        role="tab" aria-selected="false" data-tab="savli">Savli Stone Crusher</button>
+      <button class="exp-tab"        role="tab" aria-selected="false" data-tab="asu">Arizona State University</button>
+      <button class="exp-tab"        role="tab" aria-selected="false" data-tab="leadership">Leadership</button>
+    </div>
+
+    <!-- TCS Panel -->
+    <div class="exp-panel active" id="tab-tcs" role="tabpanel">
+      <!-- Business Analyst -->
+      <div class="reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Business Analyst</div>
+            <div class="exp-org">Tata Consultancy Services &nbsp;·&nbsp; GE Vernova (Client)</div>
+            <div class="exp-location">Pune, India</div>
+          </div>
+          <div class="exp-date">Apr 2023 – Jul 2024</div>
+        </div>
+        <div class="exp-metrics">
+          <div class="metric-chip">
+            <span class="metric">82→91%</span>
+            <span class="metric-label">Customer satisfaction</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">20–30%</span>
+            <span class="metric-label">Fewer support tickets</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">10+</span>
+            <span class="metric-label">Stakeholder inputs → BRD</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">3</span>
+            <span class="metric-label">Sprint UAT cycles owned</span>
+          </div>
+        </div>
+        <ul class="exp-ul">
+          <li>Managed UAT across 3 sprint releases, coordinating pre-launch testing with technical and operations teams, maintaining change logs, and packaging release notes for each handoff — contributing to a customer satisfaction increase from 82% to 91% over 12 months.</li>
+          <li>Owned feature intake by translating 10+ stakeholder inputs into BRD specs the development team could execute without back-and-forth clarification, directly managing the product feature backlog across global rollouts in MENA, Europe, and North America.</li>
+          <li>Communicated pilot and launch status metrics to cross-functional stakeholders across 3 rollouts, cutting post-migration support tickets by 20–30% by proactively flagging data mismatches in Excel before go-live.</li>
+        </ul>
+        <div class="exp-tools">
+          <span class="tool-tag">JIRA</span><span class="tool-tag">Confluence</span><span class="tool-tag">Excel</span><span class="tool-tag">SQL</span><span class="tool-tag">BRD/FRD</span><span class="tool-tag">UAT</span><span class="tool-tag">Agile Scrum</span>
+        </div>
+      </div>
+
+      <!-- ASE -->
+      <div class="exp-sub-role reveal reveal-delay-1">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Assistant System Engineer</div>
+            <div class="exp-org">Tata Consultancy Services</div>
+            <div class="exp-location">Mumbai, India</div>
+          </div>
+          <div class="exp-date">Feb 2022 – Mar 2023</div>
+        </div>
+        <div class="exp-metrics">
+          <div class="metric-chip">
+            <span class="metric">40%</span>
+            <span class="metric-label">Fewer repeat escalations</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">15%</span>
+            <span class="metric-label">Faster ticket resolution</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">14</span>
+            <span class="metric-label">Person team supported</span>
+          </div>
+        </div>
+        <ul class="exp-ul">
+          <li>Resolved live tool and user issues by reading AWS CloudWatch logs, checking S3 data flows, and tracing Lambda pipeline breaks — closing tickets within SLA and lifting queue clearance by 2–3%.</li>
+          <li>Pulled SQL data and built sprint-level Excel reports to track deployment metrics and bug patterns for a 14-person team, cutting ticket queue time by 15% through data-driven repeat-issue elimination.</li>
+          <li>Executed independent REST API validation each sprint — compared version changes, scanned repo updates, and caught recurring bugs before user impact, reducing repeat escalations by 40% over 4 sprints.</li>
+          <li>Monitored data pipeline health daily using New Relic and live SQL queries, identifying indexing problems early and flagging issues before they caused ERP data errors.</li>
+        </ul>
+        <div class="exp-tools">
+          <span class="tool-tag">AWS CloudWatch</span><span class="tool-tag">S3</span><span class="tool-tag">Lambda</span><span class="tool-tag">New Relic</span><span class="tool-tag">SQL</span><span class="tool-tag">Excel</span><span class="tool-tag">REST API</span><span class="tool-tag">ServiceNow</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Savli Panel -->
+    <div class="exp-panel" id="tab-savli" role="tabpanel">
+      <div class="reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Operations Manager</div>
+            <div class="exp-org">Savli Stone Crusher</div>
+            <div class="exp-location">India</div>
+          </div>
+          <div class="exp-date">Jul 2019 – Dec 2021</div>
+        </div>
+        <div class="exp-metrics">
+          <div class="metric-chip">
+            <span class="metric">181</span>
+            <span class="metric-label">Tons output / day</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">$10K</span>
+            <span class="metric-label">Annual logistics savings</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">$30K</span>
+            <span class="metric-label">Annual profit growth</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">9</span>
+            <span class="metric-label">Person team managed</span>
+          </div>
+        </div>
+        <ul class="exp-ul">
+          <li>Ran end-to-end quarry-to-delivery operations across a 9-person team — managing crushing, sorting, multi-SKU inventory, and customer delivery schedules while holding output steady at 181 tons per day without missing a single deadline.</li>
+          <li>Built weekly production schedules, assigned tasks by workload and skill, and instituted a maintenance checklist for 4 machines that reduced unexpected breakdowns and kept orders on track.</li>
+          <li>Cut logistics costs by 15% ($10K/year) and grew annual profit by $30K by identifying through Excel analysis that the owned fleet ran at 40% capacity, then switching to a third-party provider that also reduced delivery time by one day.</li>
+        </ul>
+        <div class="exp-tools">
+          <span class="tool-tag">Excel</span><span class="tool-tag">Operations scheduling</span><span class="tool-tag">Inventory management</span><span class="tool-tag">P&amp;L analysis</span><span class="tool-tag">Logistics</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASU Panel -->
+    <div class="exp-panel" id="tab-asu" role="tabpanel">
+      <div class="reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Admissions Representative</div>
+            <div class="exp-org">Arizona State University</div>
+            <div class="exp-location">Phoenix, AZ</div>
+          </div>
+          <div class="exp-date">May 2025 – Present</div>
+        </div>
+        <div class="exp-metrics">
+          <div class="metric-chip">
+            <span class="metric">85%</span>
+            <span class="metric-label">Same-day resolution rate</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">20%</span>
+            <span class="metric-label">Fewer supervisor escalations</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">4</span>
+            <span class="metric-label">Workflows documented</span>
+          </div>
+          <div class="metric-chip">
+            <span class="metric">6</span>
+            <span class="metric-label">Failure patterns diagnosed</span>
+          </div>
+        </div>
+        <ul class="exp-ul">
+          <li>Owned stakeholder communication across enrollment, financial aid, and advising teams to track workflow status and resolution metrics — maintaining same-day resolution at 85% across high-volume daily caseloads.</li>
+          <li>Analyzed high-volume case data in PeopleSoft and Salesforce to surface repeat issue patterns, then created requirements documents for 4 workflows and delivered measurable process improvements within 3 months.</li>
+          <li>Reduced supervisor escalations by 20% by diagnosing 6 recurring failure patterns across 40+ daily calls and 10–15 emails per day, converting vague complaints into structured problem statements and co-authoring 4 corrective SOPs.</li>
+        </ul>
+        <div class="exp-tools">
+          <span class="tool-tag">PeopleSoft</span><span class="tool-tag">Salesforce</span><span class="tool-tag">SOP documentation</span><span class="tool-tag">Process improvement</span><span class="tool-tag">RCA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leadership Panel -->
+    <div class="exp-panel" id="tab-leadership" role="tabpanel">
+      <div class="reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Leadership &amp; Collaboration</div>
+            <div class="exp-org">Arizona State University &amp; Professional Contexts</div>
+          </div>
+        </div>
+        <ul class="exp-ul">
+          <li>Led cross-functional product incubation team at the ASU Honeywell Tech Innovation Lab — coordinating stakeholders across 4 departments from discovery through final sign-off.</li>
+          <li>Demonstrated consistent ability to work across functional boundaries: managing relationships between product, engineering, operations, and business stakeholders in both enterprise and startup contexts.</li>
+          <li>Initiated and co-led corrective process documentation initiatives at ASU Admissions — transforming front-line observations into structured improvement recommendations adopted at the team level.</li>
+          <li>Maintained composure and clear communication across high-volume, time-sensitive environments — a skill developed equally in enterprise software delivery and quarry operations management.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── PROJECTS ───────────────────────────────────────── -->
+<section id="projects" aria-label="Projects">
+  <div class="container">
+    <div class="projects-intro">
+      <div class="reveal">
+        <div class="section-label">03 — Projects</div>
+        <h2 class="projects-title">Applied work &amp; case studies</h2>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <p class="projects-copy">
+          Structured explorations in product strategy, market analysis, and solution design — each grounded in real research, stakeholder work, and measurable outputs.
+        </p>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+      <!-- Featured: Honeywell -->
+      <div class="project-card featured reveal" data-project="honeywell">
+        <div class="project-number">01 — Featured</div>
+        <h3 class="project-title">Smart Accessible Management</h3>
+        <div class="project-org">ASU Honeywell Tech Innovation Lab &nbsp;·&nbsp; Jan – Apr 2025</div>
+        <p class="project-summary">
+          End-to-end product incubation for an AI-assisted airport accessibility platform — from stakeholder discovery and market sizing through prototype delivery and requirements traceability.
+        </p>
+        <div class="project-metrics-row">
+          <div class="project-metric">
+            <div class="metric">$100M</div>
+            <div class="metric-label">TAM sized</div>
+          </div>
+          <div class="project-metric">
+            <div class="metric">23+</div>
+            <div class="metric-label">Stakeholders interviewed</div>
+          </div>
+          <div class="project-metric">
+            <div class="metric">12</div>
+            <div class="metric-label">Screen Figma prototype</div>
+          </div>
+          <div class="project-metric">
+            <div class="metric">40%</div>
+            <div class="metric-label">Projected complaint reduction</div>
+          </div>
+        </div>
+        <div class="project-expand" id="proj-honeywell">
+          <ul>
+            <li>Interviewed 23+ stakeholders across 4 airport departments to define problem scope and align on product direction.</li>
+            <li>Ran AI-assisted market research to size a $100M total addressable market in airport accessibility — framing the commercial opportunity for stakeholder buy-in.</li>
+            <li>Built a 12-screen Figma prototype and stress-tested go-to-market assumptions via the Business Model Canvas, projecting a 20–25% rise in passenger satisfaction and a 40% reduction in service complaints.</li>
+            <li>Tracked 6 review checkpoints through a requirements traceability log, refreshing competitive positioning after each feedback round and keeping 23 stakeholders aligned from discovery through sign-off.</li>
+          </ul>
+        </div>
+        <button class="project-toggle" onclick="toggleProject('honeywell')" aria-expanded="false" aria-controls="proj-honeywell">
+          <span id="toggle-label-honeywell">View details</span>
+          <span class="project-toggle-icon" id="toggle-icon-honeywell">+</span>
+        </button>
+      </div>
+
+      <!-- Markstrat -->
+      <div class="project-card reveal reveal-delay-1" data-project="markstrat">
+        <div class="project-number">02</div>
+        <h3 class="project-title">Markstrat — Competitive Simulation</h3>
+        <div class="project-org">Business Strategy · ASU</div>
+        <p class="project-summary">
+          Multi-round brand and market strategy simulation — applying perceptual mapping, pricing strategy, and competitive segmentation to grow market share under constrained resources.
+        </p>
+        <div class="coming-soon-badge">
+          <span>·</span> Case study in progress
+        </div>
+      </div>
+
+      <!-- Strategy Project -->
+      <div class="project-card reveal reveal-delay-2" data-project="strategy">
+        <div class="project-number">03</div>
+        <h3 class="project-title">Strategic Analysis Project</h3>
+        <div class="project-org">Strategy &amp; Operations · ASU</div>
+        <p class="project-summary">
+          Applied frameworks including Porter's Five Forces, SWOT, and GTM strategy development to a real-world business case — translating research into structured strategic recommendations.
+        </p>
+        <div class="coming-soon-badge">
+          <span>·</span> Case study in progress
+        </div>
+      </div>
+
+      <!-- Advanced PM -->
+      <div class="project-card reveal reveal-delay-3" data-project="pm">
+        <div class="project-number">04</div>
+        <h3 class="project-title">Advanced Project Management</h3>
+        <div class="project-org">Engineering Management · ASU</div>
+        <p class="project-summary">
+          Structured project planning, risk analysis, and stakeholder coordination exercise demonstrating end-to-end PM skills: scope definition, WBS, timeline, resource allocation, and delivery reporting.
+        </p>
+        <div class="coming-soon-badge">
+          <span>·</span> Case study in progress
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── SKILLS ─────────────────────────────────────────── -->
+<section id="skills" aria-label="Skills">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">04 — Skills &amp; Tools</div>
+    </div>
+    <div class="skills-grid reveal reveal-delay-1">
+      <div class="skills-cell">
+        <div class="skills-cell-title">Business Analysis</div>
+        <div class="skills-list">
+          <span class="skill-tag">Requirements gathering</span>
+          <span class="skill-tag">BRD / FRD</span>
+          <span class="skill-tag">Gap analysis</span>
+          <span class="skill-tag">Process mapping</span>
+          <span class="skill-tag">UAT coordination</span>
+          <span class="skill-tag">Traceability</span>
+          <span class="skill-tag">Root cause analysis</span>
+          <span class="skill-tag">Competitive benchmarking</span>
+          <span class="skill-tag">Market segmentation</span>
+        </div>
+      </div>
+      <div class="skills-cell">
+        <div class="skills-cell-title">Technical</div>
+        <div class="skills-list">
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Advanced Excel</span>
+          <span class="skill-tag">AWS CloudWatch</span>
+          <span class="skill-tag">S3 / Lambda</span>
+          <span class="skill-tag">REST API validation</span>
+          <span class="skill-tag">New Relic</span>
+          <span class="skill-tag">Data migration validation</span>
+          <span class="skill-tag">SOX compliance</span>
+          <span class="skill-tag">ITIL change mgmt</span>
+        </div>
+      </div>
+      <div class="skills-cell">
+        <div class="skills-cell-title">Platforms &amp; Tools</div>
+        <div class="skills-list">
+          <span class="skill-tag">Salesforce</span>
+          <span class="skill-tag">PeopleSoft</span>
+          <span class="skill-tag">ServiceNow</span>
+          <span class="skill-tag">Jira</span>
+          <span class="skill-tag">Confluence</span>
+          <span class="skill-tag">SAP</span>
+          <span class="skill-tag">Oracle</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Miro</span>
+          <span class="skill-tag">MS Office Suite</span>
+        </div>
+      </div>
+      <div class="skills-cell">
+        <div class="skills-cell-title">Frameworks</div>
+        <div class="skills-list">
+          <span class="skill-tag">Agile Scrum</span>
+          <span class="skill-tag">Kanban</span>
+          <span class="skill-tag">Design Thinking</span>
+          <span class="skill-tag">Business Model Canvas</span>
+          <span class="skill-tag">GTM strategy</span>
+          <span class="skill-tag">Perceptual mapping</span>
+          <span class="skill-tag">Pricing strategy</span>
+          <span class="skill-tag">P&amp;L analysis</span>
+          <span class="skill-tag">Inventory mgmt (EOQ, MRP)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── RESUME ─────────────────────────────────────────── -->
+<section id="resume" aria-label="Resume and links">
+  <div class="container">
+    <div class="resume-inner">
+      <div class="resume-left reveal">
+        <div class="section-label" style="color:rgba(247,244,240,.4)">05 — Resume &amp; Links</div>
+        <h2 class="resume-title">Everything you need, one click away.</h2>
+        <p class="resume-copy">
+          Download my latest resume, connect on LinkedIn, or reach out directly. I keep these current and respond quickly.
+        </p>
+        <div class="resume-actions">
+          <!-- REPLACE: Update href to your resume file -->
+          <a href="Prathamesh_BA_Resume.pdf" download class="btn btn-paper">Download Resume ↓</a>
+          <!-- REPLACE: Update href to your actual LinkedIn URL -->
+          <a href="https://linkedin.com/in/prathameshvpatil" target="_blank" rel="noopener" class="btn btn-ghost-light btn-ghost">View LinkedIn →</a>
+        </div>
+        <div class="seeking-note">
+          <div class="seeking-pulse" aria-hidden="true"></div>
+          Actively seeking full-time roles beginning mid-2025
+        </div>
+      </div>
+      <div class="resume-right reveal reveal-delay-1">
+        <!-- REPLACE: Update href with your actual LinkedIn URL -->
+        <a href="https://linkedin.com/in/prathameshvpatil" target="_blank" rel="noopener" class="resume-link-card">
+          <div>
+            <div class="resume-link-label">LinkedIn</div>
+            <div class="resume-link-value">linkedin.com/in/prathameshvpatil</div>
+          </div>
+          <div class="resume-link-arrow">→</div>
+        </a>
+        <!-- REPLACE: Update href with your actual email -->
+        <a href="mailto:prathameshpatil5196@gmail.com" class="resume-link-card">
+          <div>
+            <div class="resume-link-label">Email</div>
+            <div class="resume-link-value">prathameshpatil5196@gmail.com</div>
+          </div>
+          <div class="resume-link-arrow">→</div>
+        </a>
+        <!-- REPLACE: Update href with your phone number -->
+        <a href="tel:+16025767646" class="resume-link-card">
+          <div>
+            <div class="resume-link-label">Phone</div>
+            <div class="resume-link-value">+1 (602) 576-7646</div>
+          </div>
+          <div class="resume-link-arrow">→</div>
+        </a>
+        <a href="Prathamesh_BA_Resume.pdf" download class="resume-link-card">
+          <div>
+            <div class="resume-link-label">Resume</div>
+            <div class="resume-link-value">Prathamesh_BA_Resume.pdf</div>
+          </div>
+          <div class="resume-link-arrow">↓</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────── -->
+<section id="contact" aria-label="Contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-left reveal">
+        <div class="section-label">06 — Contact</div>
+        <h2 class="contact-title">Let's start a conversation.</h2>
+        <p class="contact-copy">
+          Whether you're a recruiter, hiring manager, alumni, or fellow practitioner — I'd genuinely enjoy the conversation. I respond to every thoughtful message, typically within a day.
+        </p>
+      </div>
+      <div class="contact-right reveal reveal-delay-1">
+        <!-- REPLACE: Update href with your actual email -->
+        <a href="mailto:prathameshpatil5196@gmail.com" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 5l7 5 7-5" stroke="currentColor" stroke-width="1.3"/></svg>
+          </div>
+          <div class="contact-info">
+            <div class="contact-info-label">Email</div>
+            <div class="contact-info-value">prathameshpatil5196@gmail.com</div>
+          </div>
+        </a>
+        <!-- REPLACE: Update href with your phone -->
+        <a href="tel:+16025767646" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="4.5" y="1" width="7" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="12.5" r=".8" fill="currentColor"/></svg>
+          </div>
+          <div class="contact-info">
+            <div class="contact-info-label">Phone</div>
+            <div class="contact-info-value">+1 (602) 576-7646</div>
+          </div>
+        </a>
+        <!-- REPLACE: Update href with your LinkedIn URL -->
+        <a href="https://linkedin.com/in/prathameshvpatil" target="_blank" rel="noopener" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.5v5M4.5 4.5v.5M7.5 11.5V9c0-1.5 4-1.5 4 0v2.5M7.5 6.5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="contact-info">
+            <div class="contact-info-label">LinkedIn</div>
+            <div class="contact-info-value">linkedin.com/in/prathameshvpatil</div>
+          </div>
+        </a>
+        <div class="contact-item" style="cursor:default;">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="7" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 15c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.3"/></svg>
+          </div>
+          <div class="contact-info">
+            <div class="contact-info-label">Location</div>
+            <div class="contact-info-value">Phoenix, AZ · Open to relocate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer reveal">
+      <div class="footer-copy">© 2025 Prathamesh Vijay Patil. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#hero">Back to top ↑</a>
+        <a href="Prathamesh_BA_Resume.pdf" download>Resume ↓</a>
+        <a href="https://linkedin.com/in/prathameshvpatil" target="_blank" rel="noopener">LinkedIn →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCRIPTS ────────────────────────────────────────── -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── Scroll reveal ──────────────────────────── */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  /* ── Nav scroll state ───────────────────────── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  /* ── Experience tabs ────────────────────────── */
+  document.querySelectorAll('.exp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.exp-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      const target = document.getElementById('tab-' + tab.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  /* ── Project expand ─────────────────────────── */
+  window.toggleProject = function(id) {
+    const panel = document.getElementById('proj-' + id);
+    const icon  = document.getElementById('toggle-icon-' + id);
+    const label = document.getElementById('toggle-label-' + id);
+    const btn   = panel.parentElement.querySelector('.project-toggle');
+    const isOpen = panel.classList.contains('open');
+    panel.classList.toggle('open', !isOpen);
+    icon.classList.toggle('rotated', !isOpen);
+    label.textContent = isOpen ? 'View details' : 'Hide details';
+    btn.setAttribute('aria-expanded', String(!isOpen));
+  };
+
+  /* ── Mobile menu ────────────────────────────── */
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>
